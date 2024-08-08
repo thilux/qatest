@@ -1,0 +1,347 @@
+Guild Registration and Control Program
+Description
+
+This is a guild (bounty hunter) registration and control program simulating the guild from The Mandalorian. It allows registering, retrieving, updating, and deleting guild members and tasks. Tasks can be assigned to one or more guild members, and their statuses can be tracked (pending, in progress, completed, failed). When a task is failed, it can be reassigned. Tasks have associated credits, and members have a credit bucket. When a task is completed, the associated credits are evenly distributed among the assigned members.
+
+API Endpoints
+
+Guild Members
+
+Register Member: POST /members
+Get Member: GET /members/<member_id>
+Update Member: PUT /members/<member_id>
+Delete Member: DELETE /members/<member_id>
+List Members: GET /members
+
+
+
+Tasks
+
+Create Task: POST /tasks
+Get Task: GET /tasks/<task_id>
+Update Task: PUT /tasks/<task_id>
+Delete Task: DELETE /tasks/<task_id>
+List tasks: GET /tasks
+
+
+Task Assignments
+
+Assign Task to Members: POST /tasks/<task_id>/assign
+Update Task Status: PUT /tasks/<task_id>/status
+Get Task Assignment: GET /tasks/<task_id>/assignment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Register Member
+Endpoint: POST /members
+
+Description: Registers a new member in the guild.
+
+Example Request Body:
+
+
+
+{
+  "name": "Boba Fett"
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "name": "Boba Fett",
+  "credit_bucket": 0
+}
+
+
+
+
+2. List Members
+Endpoint: GET /members
+
+Description: Retrieves a list of all members in the guild.
+
+Example Response:
+
+
+
+[
+  {
+    "id": 1,
+    "name": "Boba Fett",
+    "credit_bucket": 0
+  },
+  {
+    "id": 2,
+    "name": "Din Djarin",
+    "credit_bucket": 0
+  }
+]
+
+
+
+
+
+3. Get Member
+Endpoint: GET /members/{member_id}
+
+Description: Retrieves details of a specific member by ID.
+
+Example Response:
+
+
+
+{
+  "id": 1,
+  "name": "Boba Fett",
+  "credit_bucket": 0
+}
+
+
+
+
+4. Update Member
+Endpoint: PUT /members/{member_id}
+
+Description: Updates details of a specific member by ID.
+
+Example Request Body:
+
+
+
+{
+  "name": "Jango Fett"
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "name": "Jango Fett",
+  "credit_bucket": 0
+}
+
+
+
+5. Delete Member
+Endpoint: DELETE /members/{member_id}
+
+Description: Deletes a specific member by ID.
+
+Example Response:
+
+No content, status code 204
+
+
+
+
+6. Create Task
+Endpoint: POST /tasks
+
+Description: Creates a new task in the guild.
+
+Example Request Body:
+
+
+
+{
+  "description": "Capture Han Solo",
+  "credits": 1000
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "description": "Capture Han Solo",
+  "credits": 1000,
+  "status": "pending"
+}
+
+
+
+
+
+7. List Tasks
+Endpoint: GET /tasks
+
+Description: Retrieves a list of all tasks in the guild.
+
+Example Response:
+
+
+
+[
+  {
+    "id": 1,
+    "description": "Capture Han Solo",
+    "credits": 1000,
+    "status": "pending"
+  },
+  {
+    "id": 2,
+    "description": "Guard the asset",
+    "credits": 500,
+    "status": "in progress"
+  }
+]
+
+
+
+
+
+8. Get Task
+Endpoint: GET /tasks/{task_id}
+
+Description: Retrieves details of a specific task by ID.
+
+Example Response:
+
+
+
+{
+  "id": 1,
+  "description": "Capture Han Solo",
+  "credits": 1000,
+  "status": "pending"
+}
+
+
+
+
+9. Update Task
+Endpoint: PUT /tasks/{task_id}
+
+Description: Updates details of a specific task by ID.
+
+Example Request Body:
+
+
+
+{
+  "description": "Capture Luke Skywalker",
+  "credits": 1500
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "description": "Capture Luke Skywalker",
+  "credits": 1500,
+  "status": "pending"
+}
+
+
+
+
+
+
+
+10. Delete Task
+Endpoint: DELETE /tasks/{task_id}
+
+Description: Deletes a specific task by ID.
+
+Example Response:
+
+No content, status code 204
+
+
+
+
+
+11. Assign Task to Members
+Endpoint: POST /tasks/{task_id}/assign
+
+Description: Assigns one or more members to a specific task.
+
+Example Request Body:
+
+
+
+{
+  "member_ids": [1, 2]
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "members": [1, 2]
+}
+
+
+
+12. Update Task Status
+Endpoint: PUT /tasks/{task_id}/status
+
+Description: Updates the status of a specific task.
+
+Example Request Body:
+
+
+
+{
+  "status": "completed"
+}
+Example Response:
+
+
+
+{
+  "id": 1,
+  "status": "completed"
+}
+
+
+13. Get Task Assignment
+Endpoint: GET /tasks/{task_id}/assignment
+
+Description: Retrieves the assignment details for a specific task, including the task description and the names of the assigned members.
+
+Example Response:
+
+
+
+{
+  "id": 1,
+  "description": "Capture Han Solo",
+  "members": [
+    {
+      "id": 1,
+      "name": "Boba Fett"
+    },
+    {
+      "id": 2,
+      "name": "Din Djarin"
+    }
+  ]
+}
+
